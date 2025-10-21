@@ -68,13 +68,14 @@ class TourDeckAdapter extends TypeAdapter<TourDeck> {
       creationDate: fields[2] as DateTime?,
       cardIds: (fields[3] as List).cast<int>(),
       isMine: fields[4] as bool,
+      isPlaceholder: fields[6] == null ? false : fields[6] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, TourDeck obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
@@ -84,7 +85,9 @@ class TourDeckAdapter extends TypeAdapter<TourDeck> {
       ..writeByte(3)
       ..write(obj.cardIds)
       ..writeByte(4)
-      ..write(obj.isMine);
+      ..write(obj.isMine)
+      ..writeByte(6)
+      ..write(obj.isPlaceholder);
   }
 
   @override

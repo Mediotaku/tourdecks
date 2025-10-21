@@ -19,7 +19,7 @@ types:
         index: 4
   TourDeck:
     typeId: 2
-    nextIndex: 5
+    nextIndex: 7
     fields:
       name:
         index: 0
@@ -31,3 +31,5 @@ types:
         index: 3
       isMine:
         index: 4
+      isPlaceholder:
+        index: 6

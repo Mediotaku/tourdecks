@@ -1,0 +1,1 @@
+enum ImageOptions { captureWithCamera, selectFromLibrary }

@@ -2,7 +2,7 @@ import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tourdecks/models/card.dart';
 
-final CardRepositoryProvider = Provider<CardRepository>(
+final cardRepositoryProvider = Provider<CardRepository>(
   (ref) => CardRepository(),
 );
 

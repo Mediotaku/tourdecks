@@ -7,6 +7,7 @@ import 'package:tourdecks/hive/hive_registrar.g.dart';
 import 'package:tourdecks/models/card.dart';
 import 'package:tourdecks/models/tourdeck.dart';
 import 'package:flutter/rendering.dart';
+import 'package:tourdecks/ui/tourdeck_page/tourdeck_page.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 

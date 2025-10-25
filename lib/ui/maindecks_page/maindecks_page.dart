@@ -6,8 +6,9 @@ import 'package:tourdecks/global/labels.dart';
 import 'package:tourdecks/models/tourdeck.dart';
 import 'package:tourdecks/ui/common/background_pattern.dart';
 import 'package:tourdecks/ui/maindecks_page/maindecks_viewmodel.dart';
-import 'package:tourdecks/ui/widgets/small_card.dart';
-import 'package:tourdecks/ui/widgets/small_card_placeholder.dart';
+import 'package:tourdecks/ui/tourdeck_page/tourdeck_page.dart';
+import 'package:tourdecks/ui/maindecks_page/widgets/small_card.dart';
+import 'package:tourdecks/ui/maindecks_page/widgets/small_card_placeholder.dart';
 import 'package:tourdecks/utils/test_data.dart';
 
 class MainDecksPage extends ConsumerWidget {
@@ -45,8 +46,11 @@ class MainDecksPage extends ConsumerWidget {
               ),
               ElevatedButton(
                 onPressed: () async {
-                  await imageService.storeTestingImages();
-                  generateTestTourDecks(ref);
+                  /*await imageService.storeTestingImages();
+                  generateTestTourDecks(ref);*/
+                  Navigator.of(
+                    context,
+                  ).push(MaterialPageRoute<void>(builder: (context) => const TourDeckPage()));
                 },
                 child: const Text('Add Tourdeck'),
               ),
@@ -56,9 +60,7 @@ class MainDecksPage extends ConsumerWidget {
                 itemCount: items.length,
                 itemBuilder: (context, index) {
                   final item = items[index];
-                  return item.isPlaceholder
-                      ? SmallCardPlaceholder()
-                      : SmallCard(item: item);
+                  return item.isPlaceholder ? SmallCardPlaceholder() : SmallCard(item: item);
                 },
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   childAspectRatio: 0.80,
@@ -75,9 +77,7 @@ class MainDecksPage extends ConsumerWidget {
           onPressed: () {
             print('FAB clicked');
           },
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(50),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
           backgroundColor: Color.fromARGB(255, 255, 128, 128),
           child: Icon(Icons.near_me_outlined, size: 55, color: Colors.white),
         ),
@@ -96,11 +96,7 @@ class MainDecksPage extends ConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   IconButton(
-                    icon: SvgPicture.asset(
-                      "assets/images/decks_icon.svg",
-                      width: 35,
-                      height: 35,
-                    ),
+                    icon: SvgPicture.asset("assets/images/decks_icon.svg", width: 35, height: 35),
                     padding: EdgeInsets.all(0.0),
                     onPressed: () {},
                   ),

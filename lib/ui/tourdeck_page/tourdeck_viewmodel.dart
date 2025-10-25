@@ -2,13 +2,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tourdecks/data/repositories/card_repository.dart';
 import 'package:tourdecks/models/card.dart';
 
-final CardsProvider = StateNotifierProvider<CardsNotifier, List<Card>>(
-  (ref) => CardsNotifier(ref),
-);
+final currentPageProvider = StateProvider<int>((ref) {
+  return 0;
+});
+
+final cardsProvider = StateNotifierProvider<CardsNotifier, List<Card>>((ref) => CardsNotifier(ref));
 
 class CardsNotifier extends StateNotifier<List<Card>> {
   CardsNotifier(this.ref) : super([]) {
-    repo = ref.read(CardRepositoryProvider);
+    repo = ref.read(cardRepositoryProvider);
     fetchCards();
   }
   late CardRepository? repo;

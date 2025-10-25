@@ -47,7 +47,7 @@ class TourdecksNotifier extends StateNotifier<List<TourDeck>> {
       return '';
     }
     final cardKey = item.cardIds.first;
-    final card = ref.read(CardsProvider.notifier).getCardById(cardKey);
+    final card = ref.read(cardsProvider.notifier).getCardById(cardKey);
     return card?.imageURL ?? '';
   }
 

@@ -2,9 +2,7 @@ import 'package:tourdecks/models/tourdeck.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final tourDeckRepositoryProvider = Provider<TourDeckRepository>(
-  (ref) => TourDeckRepository(),
-);
+final tourDeckRepositoryProvider = Provider<TourDeckRepository>((ref) => TourDeckRepository());
 
 class TourDeckRepository {
   late Box<TourDeck> _hive;
@@ -23,6 +21,10 @@ class TourDeckRepository {
   List<TourDeck> addItem(TourDeck deck) {
     _hive.add(deck);
     return _hive.values.toList();
+  }
+
+  TourDeck? getItemByKey(int key) {
+    return _hive.getAt(key);
   }
 
   /// Remove Particular X by id

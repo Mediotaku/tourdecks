@@ -9,13 +9,16 @@ import 'package:tourdecks/ui/tourdeck_page/tourdeck_viewmodel.dart';
 import 'package:tourdecks/ui/tourdeck_page/widgets/animated_card.dart';
 
 class TourDeckPage extends ConsumerWidget {
-  const TourDeckPage({super.key});
+  final int deckKey;
+  const TourDeckPage({super.key, required this.deckKey});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     List<Card> items = ref.watch(cardsProvider);
     final pageController = PageController(viewportFraction: 0.73);
+    String documentsPath = ref.watch(filesPathProvider).value ?? '';
     final currentPage = ref.watch(currentPageProvider);
+    final tourdeck = ref.read(tourDecksProvider.notifier).getTourDeckByKey(deckKey);
 
     return CustomPaint(
       painter: DotBackground(),
@@ -46,16 +49,22 @@ class TourDeckPage extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       spacing: 0,
                       children: [
-                        const Text(
-                          'Imperial Palace',
-                          style: TextStyle(
-                            fontFamily: 'Petrona',
-                            fontSize: 35,
-                            color: Color.fromARGB(184, 0, 0, 0),
+                        Container(
+                          width: 310,
+                          padding: const EdgeInsets.only(top: 4),
+                          child: Text(
+                            tourdeck != null ? tourdeck.name : 'Something went wrong',
+                            maxLines: 2,
+                            style: const TextStyle(
+                              fontFamily: 'Petrona',
+                              height: 1.2,
+                              fontSize: 35,
+                              color: Color.fromARGB(184, 0, 0, 0),
+                            ),
                           ),
                         ),
                         Text(
-                          'Tokyo, Japan',
+                          tourdeck != null ? tourdeck.location : '',
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.w500,
@@ -79,7 +88,12 @@ class TourDeckPage extends ConsumerWidget {
                   itemCount: items.length,
                   itemBuilder: (context, index) {
                     final item = items[index];
-                    return AnimatedCard(pageController: pageController, index: index, item: item);
+                    return AnimatedCard(
+                      pageController: pageController,
+                      index: index,
+                      item: item,
+                      documentsPath: documentsPath,
+                    );
                   },
                 ),
               ),

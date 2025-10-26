@@ -3,8 +3,7 @@
 // Adjust the import paths below to match your project structure.
 
 import 'dart:math';
-import 'package:flutter/material.dart'
-    hide Card; // Avoid clash with your Card model.
+import 'package:flutter/material.dart' hide Card; // Avoid clash with your Card model.
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_ce/hive.dart';
 import 'package:tourdecks/models/tourdeck.dart';
@@ -107,7 +106,7 @@ void generateTestTourDecks(WidgetRef ref, {int seed = 42}) async {
           name: c['name']!,
           location: c['city']!,
           description: _buildDescription(c['name']!, c['city']!),
-          imageURL: imagePath,
+          filename: imagePath,
         ),
       );
       cardsIDs.add(key);

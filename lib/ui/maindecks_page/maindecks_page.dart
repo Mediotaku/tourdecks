@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:tourdecks/data/services/image_storage_service.dart';
 import 'package:tourdecks/global/labels.dart';
 import 'package:tourdecks/models/tourdeck.dart';
@@ -18,6 +19,7 @@ class MainDecksPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     List<TourDeck> items = ref.watch(tourDecksProvider);
     final imageService = ref.read(imageStorageServiceProvider);
+    String documentsPath = ref.watch(filesPathProvider).value ?? '';
 
     return CustomPaint(
       painter: DotBackground(),
@@ -46,13 +48,10 @@ class MainDecksPage extends ConsumerWidget {
               ),
               ElevatedButton(
                 onPressed: () async {
-                  /*await imageService.storeTestingImages();
-                  generateTestTourDecks(ref);*/
-                  Navigator.of(
-                    context,
-                  ).push(MaterialPageRoute<void>(builder: (context) => const TourDeckPage()));
+                  await imageService.storeTestingImages();
+                  generateTestTourDecks(ref);
                 },
-                child: const Text('Add Tourdeck'),
+                child: const Text('Generate Test Data'),
               ),
               GridView.builder(
                 shrinkWrap: true,
@@ -60,7 +59,9 @@ class MainDecksPage extends ConsumerWidget {
                 itemCount: items.length,
                 itemBuilder: (context, index) {
                   final item = items[index];
-                  return item.isPlaceholder ? SmallCardPlaceholder() : SmallCard(item: item);
+                  return item.isPlaceholder
+                      ? SmallCardPlaceholder()
+                      : SmallCard(item: item, documentsPath: documentsPath);
                 },
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   childAspectRatio: 0.80,

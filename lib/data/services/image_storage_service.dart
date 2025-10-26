@@ -28,9 +28,7 @@ class ImageStorageService {
       ImageOptions.selectFromLibrary: Labels.LibraryOption,
     };
 
-    final requestedSelection = await DialogUtils().showDialogWithOptions(
-      optionsMap,
-    );
+    final requestedSelection = await DialogUtils().showDialogWithOptions(optionsMap);
 
     final ImagePicker picker = ImagePicker();
 
@@ -38,16 +36,10 @@ class ImageStorageService {
 
     switch (requestedSelection) {
       case ImageOptions.captureWithCamera:
-        image = await picker.pickImage(
-          source: ImageSource.camera,
-          imageQuality: 5,
-        );
+        image = await picker.pickImage(source: ImageSource.camera, imageQuality: 5);
         break;
       case ImageOptions.selectFromLibrary:
-        image = await picker.pickImage(
-          source: ImageSource.gallery,
-          imageQuality: 5,
-        );
+        image = await picker.pickImage(source: ImageSource.gallery, imageQuality: 5);
         break;
       case null:
         return null;
@@ -59,9 +51,11 @@ class ImageStorageService {
       final imageFile = File(image.path);
 
       var uuid = Uuid();
-      final File storedImage = await imageFile.copy('$path/${uuid.v4()}');
+      final String imageUrl = '/${uuid.v4()}';
 
-      return storedImage.path;
+      await imageFile.copy('$path$imageUrl');
+
+      return imageUrl;
     }
 
     return null;
@@ -69,14 +63,9 @@ class ImageStorageService {
 
   //Testing functions
   Future<void> storeTestingImages() async {
-    final AssetManifest assetManifest = await AssetManifest.loadFromAssetBundle(
-      rootBundle,
-    );
+    final AssetManifest assetManifest = await AssetManifest.loadFromAssetBundle(rootBundle);
     final List<String> assets =
-        assetManifest
-            .listAssets()
-            .where((e) => e.contains('assets/images/test'))
-            .toList();
+        assetManifest.listAssets().where((e) => e.contains('assets/images/test')).toList();
 
     assets.forEach((assetPath) async {
       final byteData = await rootBundle.load(assetPath);
@@ -84,22 +73,14 @@ class ImageStorageService {
       final String filePath = '${directory.path}/${assetPath.split('/').last}';
       final file = File(filePath);
       await file.writeAsBytes(
-        byteData.buffer.asUint8List(
-          byteData.offsetInBytes,
-          byteData.lengthInBytes,
-        ),
+        byteData.buffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes),
       );
     });
   }
 
   Future<List<String>> _getTestImagesPaths() async {
-    final AssetManifest assetManifest = await AssetManifest.loadFromAssetBundle(
-      rootBundle,
-    );
-    return assetManifest
-        .listAssets()
-        .where((e) => e.contains('assets/images/test'))
-        .toList();
+    final AssetManifest assetManifest = await AssetManifest.loadFromAssetBundle(rootBundle);
+    return assetManifest.listAssets().where((e) => e.contains('assets/images/test')).toList();
   }
 
   Future<String> getTestImagePathByIndex(int index) async {
@@ -113,10 +94,8 @@ class ImageStorageService {
     final List<String> assets = await _getTestImagesPaths();
 
     final random = Random();
-    final index =
-        random.nextInt(8) + 1; // Random number between 1 and 8 (inclusive)
+    final index = random.nextInt(8) + 1; // Random number between 1 and 8 (inclusive)
 
-    final String path = (await getApplicationDocumentsDirectory()).path;
-    return '$path/${assets[index - 1].split('/').last}'; // Subtract 1 for 0-based indexing
+    return '/${assets[index - 1].split('/').last}'; // Subtract 1 for 0-based indexing
   }
 }

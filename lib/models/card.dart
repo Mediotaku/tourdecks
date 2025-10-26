@@ -5,14 +5,14 @@ class Card extends HiveObject {
   String location;
   DateTime creationDate;
   String description;
-  String imageURL;
+  String filename;
 
   Card({
     required this.name,
     required this.location,
     DateTime? creationDate,
     required this.description,
-    required this.imageURL,
+    required this.filename,
   }) : this.creationDate = creationDate ?? DateTime.now().toUtc();
 
   factory Card.fromJson(Map<String, dynamic> json) => Card(
@@ -20,7 +20,7 @@ class Card extends HiveObject {
     location: json['location'],
     creationDate: json['creationDate'],
     description: json['description'],
-    imageURL: json['imageURL'],
+    filename: json['filename'],
   );
 
   Map<String, dynamic> toJson() => {
@@ -28,6 +28,6 @@ class Card extends HiveObject {
     'location': location,
     'creationDate': creationDate,
     'description': description,
-    'imageURL': imageURL,
+    'filename': filename,
   };
 }

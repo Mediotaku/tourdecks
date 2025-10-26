@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tourdecks/data/repositories/card_repository.dart';
 import 'package:tourdecks/models/card.dart';
+import 'package:tourdecks/ui/maindecks_page/maindecks_viewmodel.dart';
 
 final currentPageProvider = StateProvider<int>((ref) {
   return 0;
@@ -11,21 +12,21 @@ final cardsProvider = StateNotifierProvider<CardsNotifier, List<Card>>((ref) => 
 class CardsNotifier extends StateNotifier<List<Card>> {
   CardsNotifier(this.ref) : super([]) {
     repo = ref.read(cardRepositoryProvider);
+    cardIds = ref.watch(selectedTourDeckProvider)?.cardIds ?? [];
     fetchCards();
   }
   late CardRepository? repo;
   final StateNotifierProviderRef ref;
+  late List<int> cardIds = [];
 
-  ///fetch all Cards from to Hive storage
+  ///fetch all Cards from to Hive storage that belong to the current TourDeck
   void fetchCards() {
-    state = List.from(repo!.getAllItems());
-    //setPlaceholdersFill();
+    state = repo!.getAllItems().where((card) => cardIds.contains(card.key)).toList();
   }
 
   ///add Card to Hive Storage
   void addCard(Card newItem) {
-    state = repo!.addItem(newItem);
-    //setPlaceholdersFill();
+    repo!.addItem(newItem);
   }
 
   Card? getCardById(int id) {

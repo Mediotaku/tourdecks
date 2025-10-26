@@ -9,11 +9,13 @@ class AnimatedCard extends ConsumerWidget {
     required this.pageController,
     required this.index,
     required this.item,
+    required this.documentsPath,
   });
 
   final PageController pageController;
   final int index;
   final Card item;
+  final String documentsPath;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -29,7 +31,7 @@ class AnimatedCard extends ConsumerWidget {
           child: Container(
             height: value * 350,
             width: value * 300,
-            margin: const EdgeInsets.fromLTRB(15, 0, 15, 40),
+            margin: const EdgeInsets.fromLTRB(15, 0, 15, 60),
             decoration: BoxDecoration(
               border: Border.all(color: Colors.red, width: 2),
               borderRadius: BorderRadius.circular(20),
@@ -42,7 +44,7 @@ class AnimatedCard extends ConsumerWidget {
                   Container(
                     color: Colors.grey[300],
                     child: Image.file(
-                      File(item.imageURL),
+                      File(documentsPath + item.filename),
                       fit: BoxFit.cover,
                       errorBuilder:
                           (context, error, stackTrace) =>
@@ -53,7 +55,7 @@ class AnimatedCard extends ConsumerWidget {
                     bottom: 16,
                     left: 16,
                     child: Text(
-                      'Imperial',
+                      item.name,
                       style: TextStyle(
                         fontSize: 18,
                         fontFamily: 'Petrona',

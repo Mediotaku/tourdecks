@@ -21,7 +21,7 @@ class CardAdapter extends TypeAdapter<Card> {
       location: fields[1] as String,
       creationDate: fields[2] as DateTime?,
       description: fields[3] as String,
-      imageURL: fields[4] as String,
+      filename: fields[5] as String,
     );
   }
 
@@ -37,8 +37,8 @@ class CardAdapter extends TypeAdapter<Card> {
       ..write(obj.creationDate)
       ..writeByte(3)
       ..write(obj.description)
-      ..writeByte(4)
-      ..write(obj.imageURL);
+      ..writeByte(5)
+      ..write(obj.filename);
   }
 
   @override

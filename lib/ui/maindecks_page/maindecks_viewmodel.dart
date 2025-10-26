@@ -1,13 +1,17 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:tourdecks/data/repositories/tourdeck_repository.dart';
 import 'package:tourdecks/models/tourdeck.dart';
 import 'package:tourdecks/ui/tourdeck_page/tourdeck_viewmodel.dart';
 
-final tourDecksProvider =
-    StateNotifierProvider<TourdecksNotifier, List<TourDeck>>(
-      (ref) => TourdecksNotifier(ref),
-    );
+final filesPathProvider = FutureProvider.autoDispose<String>((ref) async {
+  return (await getApplicationDocumentsDirectory()).path;
+});
+
+final tourDecksProvider = StateNotifierProvider<TourdecksNotifier, List<TourDeck>>(
+  (ref) => TourdecksNotifier(ref),
+);
 
 class TourdecksNotifier extends StateNotifier<List<TourDeck>> {
   TourdecksNotifier(this.ref) : super([]) {
@@ -48,7 +52,11 @@ class TourdecksNotifier extends StateNotifier<List<TourDeck>> {
     }
     final cardKey = item.cardIds.first;
     final card = ref.read(cardsProvider.notifier).getCardById(cardKey);
-    return card?.imageURL ?? '';
+    return card?.filename ?? '';
+  }
+
+  TourDeck? getTourDeckByKey(int key) {
+    return repo!.getItemByKey(key);
   }
 
   ///remove todo from local Storage
@@ -61,4 +69,17 @@ class TourdecksNotifier extends StateNotifier<List<TourDeck>> {
   void updateTodo(int index, Todo todo) {
     state = repo!.updateTodo(index, todo);
   }*/
+}
+
+/// Holds the currently selected TourDeck (nullable).
+final selectedTourDeckProvider = StateNotifierProvider<SelectedTourDeckNotifier, TourDeck?>(
+  (ref) => SelectedTourDeckNotifier(),
+);
+
+class SelectedTourDeckNotifier extends StateNotifier<TourDeck?> {
+  SelectedTourDeckNotifier() : super(null);
+
+  void select(TourDeck deck) => state = deck;
+  void clear() => state = null;
+  TourDeck? get selected => state;
 }

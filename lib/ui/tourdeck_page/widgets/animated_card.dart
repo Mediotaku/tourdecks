@@ -26,52 +26,89 @@ class AnimatedCard extends ConsumerWidget {
             pageController.position.haveDimensions
                 ? pageController.page! - index
                 : index.toDouble();
+        double shadowValue = Curves.easeOut.transform((1 - value.abs()).clamp(0.0, 1.0));
         value = Curves.easeOut.transform((1 - (value.abs() * .4)).clamp(0.0, 1.0));
         return Center(
-          child: Container(
-            height: value * 350,
-            width: value * 300,
-            margin: const EdgeInsets.fromLTRB(15, 0, 15, 60),
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.red, width: 2),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(18),
-              child: Stack(
-                fit: StackFit.expand,
-                children: [
-                  Container(
-                    color: Colors.grey[300],
-                    child: Image.file(
-                      File(documentsPath + item.filename),
-                      fit: BoxFit.cover,
-                      errorBuilder:
-                          (context, error, stackTrace) =>
-                              Icon(Icons.broken_image, size: 60, color: Colors.grey[600]),
+          child: Hero(
+            tag: 'cardImageTag${item.key}',
+            //Material widget required to fix a know issue with text losing style during Hero animation, see: https://github.com/flutter/flutter/issues/12463
+            child: Material(
+              type: MaterialType.transparency,
+              child: Container(
+                height: value * 350,
+                width: value * 300,
+                margin: const EdgeInsets.fromLTRB(15, 0, 15, 60),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.red, width: 2),
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color.fromARGB(153, 0, 0, 0),
+                      offset: Offset(shadowValue * 2, shadowValue * 33),
+                      blurRadius: shadowValue * 72.2,
+                      spreadRadius: shadowValue * -18,
                     ),
-                  ),
-                  Positioned(
-                    bottom: 16,
-                    left: 16,
-                    child: Text(
-                      item.name,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontFamily: 'Petrona',
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                        shadows: [
-                          Shadow(
-                            offset: const Offset(1, 1),
-                            blurRadius: 3,
-                            color: Colors.black.withOpacity(0.5),
-                          ),
-                        ],
+                  ],
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(18),
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      Container(
+                        color: Colors.grey[300],
+                        child: Image.file(
+                          File(documentsPath + item.filename),
+                          fit: BoxFit.cover,
+                          errorBuilder:
+                              (context, error, stackTrace) =>
+                                  Icon(Icons.broken_image, size: 60, color: Colors.grey[600]),
+                        ),
                       ),
-                    ),
+                      // Gradient overlay (bottom -> transparent within 25% height)
+                      Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.bottomCenter,
+                            end: Alignment.topCenter,
+                            colors: [Colors.black.withValues(alpha: 0.9), Colors.transparent],
+                            stops: const [0.0, 0.25],
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        bottom: 16,
+                        left: 16,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              overflow: TextOverflow.ellipsis,
+                              item.name,
+                              style: const TextStyle(
+                                fontFamily: 'Petrona',
+                                fontSize: 17,
+                                color: Color.fromARGB(255, 255, 255, 255),
+                              ),
+                              textAlign: TextAlign.left,
+                            ),
+                            Text(
+                              overflow: TextOverflow.ellipsis,
+                              item.location,
+                              style: const TextStyle(
+                                fontFamily: 'Roboto',
+                                fontSize: 12,
+                                color: Color.fromARGB(255, 255, 255, 255),
+                              ),
+                              textAlign: TextAlign.left,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
           ),

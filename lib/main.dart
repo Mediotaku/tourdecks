@@ -8,12 +8,15 @@ import 'package:tourdecks/models/card.dart';
 import 'package:tourdecks/models/tourdeck.dart';
 import 'package:flutter/rendering.dart';
 import 'package:tourdecks/ui/tourdeck_page/tourdeck_page.dart';
+import 'package:flutter/scheduler.dart' show timeDilation;
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  //Slow down animations for easier debugging
+  timeDilation = 1;
 
+  WidgetsFlutterBinding.ensureInitialized();
   // Initialize Hive database and open the boxes
   await Hive.initFlutter();
   Hive.registerAdapters();

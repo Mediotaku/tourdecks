@@ -46,13 +46,13 @@ class MainDecksPage extends ConsumerWidget {
                   ],
                 ),
               ),
-              ElevatedButton(
+              /*ElevatedButton(
                 onPressed: () async {
                   await imageService.storeTestingImages();
                   generateTestTourDecks(ref);
                 },
                 child: const Text('Generate Test Data'),
-              ),
+              ),*/
               GridView.builder(
                 shrinkWrap: true,
                 physics: ScrollPhysics(),

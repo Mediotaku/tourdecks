@@ -17,7 +17,6 @@ class TourDeckPage extends ConsumerWidget {
     List<Card> items = ref.watch(cardsProvider);
     final pageController = PageController(viewportFraction: 0.73);
     String documentsPath = ref.watch(filesPathProvider).value ?? '';
-    final currentPage = ref.watch(currentPageProvider);
     final tourdeck = ref.read(tourDecksProvider.notifier).getTourDeckByKey(deckKey);
 
     return CustomPaint(
@@ -81,9 +80,6 @@ class TourDeckPage extends ConsumerWidget {
               // Card carousel
               Expanded(
                 child: PageView.builder(
-                  onPageChanged: (value) {
-                    ref.read(currentPageProvider.notifier).update((state) => value);
-                  },
                   controller: pageController,
                   itemCount: items.length,
                   itemBuilder: (context, index) {

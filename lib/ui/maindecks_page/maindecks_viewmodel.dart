@@ -55,6 +55,15 @@ class TourdecksNotifier extends StateNotifier<List<TourDeck>> {
     return card?.filename ?? '';
   }
 
+  int getFirstCardKey(TourDeck item) {
+    if (item.cardIds.isEmpty) {
+      return -1;
+    }
+    final cardKey = item.cardIds.first;
+    final card = ref.read(cardsProvider.notifier).getCardById(cardKey);
+    return card?.key ?? -1;
+  }
+
   TourDeck? getTourDeckByKey(int key) {
     return repo!.getItemByKey(key);
   }

@@ -3,10 +3,6 @@ import 'package:tourdecks/data/repositories/card_repository.dart';
 import 'package:tourdecks/models/card.dart';
 import 'package:tourdecks/ui/maindecks_page/maindecks_viewmodel.dart';
 
-final currentPageProvider = StateProvider<int>((ref) {
-  return 0;
-});
-
 final cardsProvider = StateNotifierProvider<CardsNotifier, List<Card>>((ref) => CardsNotifier(ref));
 
 class CardsNotifier extends StateNotifier<List<Card>> {

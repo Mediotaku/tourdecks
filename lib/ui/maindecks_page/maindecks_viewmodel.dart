@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:tourdecks/data/repositories/tourdeck_repository.dart';
+import 'package:tourdecks/models/card.dart';
 import 'package:tourdecks/models/tourdeck.dart';
 import 'package:tourdecks/ui/tourdeck_page/tourdeck_viewmodel.dart';
 
@@ -46,13 +47,10 @@ class TourdecksNotifier extends StateNotifier<List<TourDeck>> {
     }
   }
 
-  String getFirstCardImagePath(TourDeck item) {
-    if (item.cardIds.isEmpty) {
-      return '';
-    }
+  Card getFirstCard(TourDeck item) {
     final cardKey = item.cardIds.first;
     final card = ref.read(cardsProvider.notifier).getCardById(cardKey);
-    return card?.filename ?? '';
+    return card ?? Card.createPlaceholder();
   }
 
   int getFirstCardKey(TourDeck item) {

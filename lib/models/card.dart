@@ -15,6 +15,13 @@ class Card extends HiveObject {
     required this.filename,
   }) : this.creationDate = creationDate ?? DateTime.now().toUtc();
 
+  factory Card.createPlaceholder() => Card(
+    name: "name",
+    location: "location",
+    description: "description",
+    filename: "placeholder.jpg",
+  );
+
   factory Card.fromJson(Map<String, dynamic> json) => Card(
     name: json['name'],
     location: json['location'],

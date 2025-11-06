@@ -19,10 +19,10 @@ class DotBackground extends CustomPainter {
         Paint()
           ..color = backgroundColor
           ..style = PaintingStyle.fill;
-    canvas.drawRect(
-      Rect.fromLTWH(0, 0, size.width, size.height),
-      backgroundPaint,
-    );
+
+    //canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height), backgroundPaint);
+
+    //canvas.drawPaint(backgroundPaint);
 
     final paint = Paint()..color = circleColor;
     final yCount = (size.height / (spacing * 2)).ceil();

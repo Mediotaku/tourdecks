@@ -19,11 +19,11 @@ class TourDeckPage extends ConsumerWidget {
     String documentsPath = ref.watch(filesPathProvider).value ?? '';
     final tourdeck = ref.read(tourDecksProvider.notifier).getTourDeckByKey(deckKey);
 
-    return CustomPaint(
-      painter: DotBackground(),
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: SafeArea(
+    return Scaffold(
+      backgroundColor: Color.fromARGB(255, 235, 235, 235),
+      body: CustomPaint(
+        painter: DotBackground(),
+        child: SafeArea(
           child: Column(
             children: [
               // Header with back button and title
@@ -96,12 +96,12 @@ class TourDeckPage extends ConsumerWidget {
             ],
           ),
         ),
-        bottomNavigationBar: BottomAppBar(
-          padding: EdgeInsets.zero,
-          color: Colors.white,
-          shape: AutomaticNotchedShape(
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        padding: EdgeInsets.zero,
+        color: Colors.white,
+        shape: AutomaticNotchedShape(
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         ),
       ),
     );

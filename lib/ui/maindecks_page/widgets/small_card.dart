@@ -28,7 +28,7 @@ class SmallCard extends ConsumerWidget {
         Navigator.of(context).push(
           CustomMaterialRoute(
             builder: (context) => TourDeckPage(deckKey: item.key),
-            duration: Duration(seconds: 1),
+            duration: Duration(milliseconds: 800),
           ),
         );
       },
@@ -44,23 +44,6 @@ class SmallCard extends ConsumerWidget {
           fromHeroContext,
           toHeroContext,
         ) {
-          /*return Container(
-            decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                  color: const Color.fromARGB(153, 0, 0, 0),
-                  offset: Offset(animation.value * 2, animation.value * 33),
-                  blurRadius: animation.value * 72.2,
-                  spreadRadius: animation.value * -18,
-                ),
-              ],
-            ),
-            child: SmallCardHeroFlight(
-              item: item,
-              documentsPath: documentsPath,
-              animation: animation,
-            ),
-          );*/
           return SmallCardHeroFlight(
             item: item,
             documentsPath: documentsPath,
@@ -89,7 +72,7 @@ class SmallCard extends ConsumerWidget {
                     child: Image.file(
                       File(
                         documentsPath +
-                            ref.read(tourDecksProvider.notifier).getFirstCardImagePath(item),
+                            ref.read(tourDecksProvider.notifier).getFirstCard(item).filename,
                       ),
                       fit: BoxFit.cover,
                       errorBuilder:

@@ -17,15 +17,15 @@ class MainDecksPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    List<TourDeck> items = ref.watch(tourDecksProvider);
+    final List<TourDeck> items = ref.watch(tourDecksProvider);
     final imageService = ref.read(imageStorageServiceProvider);
-    String documentsPath = ref.watch(filesPathProvider).value ?? '';
+    final String documentsPath = ref.watch(filesPathProvider).value ?? '';
 
-    return CustomPaint(
-      painter: DotBackground(),
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: SafeArea(
+    return Scaffold(
+      backgroundColor: const Color.fromARGB(245, 245, 245, 245),
+      body: CustomPaint(
+        painter: DotBackground(),
+        child: SafeArea(
           child: ListView(
             padding: const EdgeInsets.all(12.0),
             physics: const BouncingScrollPhysics(),
@@ -37,7 +37,7 @@ class MainDecksPage extends ConsumerWidget {
                   children: [
                     Text(
                       Labels.MainPageTitle,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontFamily: 'Petrona',
                         fontSize: 35,
                         color: Color.fromARGB(184, 0, 0, 0),
@@ -55,12 +55,12 @@ class MainDecksPage extends ConsumerWidget {
               ),*/
               GridView.builder(
                 shrinkWrap: true,
-                physics: ScrollPhysics(),
+                physics: const ScrollPhysics(),
                 itemCount: items.length,
                 itemBuilder: (context, index) {
                   final item = items[index];
                   return item.isPlaceholder
-                      ? SmallCardPlaceholder()
+                      ? const SmallCardPlaceholder()
                       : SmallCard(item: item, documentsPath: documentsPath);
                 },
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -73,57 +73,57 @@ class MainDecksPage extends ConsumerWidget {
             ],
           ),
         ),
-        floatingActionButton: FloatingActionButton.large(
-          elevation: 6.5,
-          onPressed: () {
-            print('FAB clicked');
-          },
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-          backgroundColor: Color.fromARGB(255, 255, 128, 128),
-          child: Icon(Icons.near_me_outlined, size: 55, color: Colors.white),
+      ),
+      floatingActionButton: FloatingActionButton.large(
+        elevation: 6.5,
+        onPressed: () {
+          // FAB action
+        },
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+        backgroundColor: const Color.fromARGB(255, 255, 128, 128),
+        child: const Icon(Icons.near_me_outlined, size: 55, color: Colors.white),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: BottomAppBar(
+        padding: EdgeInsets.zero,
+        color: Colors.white,
+        shape: AutomaticNotchedShape(
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        bottomNavigationBar: BottomAppBar(
-          padding: EdgeInsets.zero,
-          color: Colors.white,
-          shape: AutomaticNotchedShape(
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Column(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  IconButton(
-                    icon: SvgPicture.asset("assets/images/decks_icon.svg", width: 35, height: 35),
-                    padding: EdgeInsets.all(0.0),
-                    onPressed: () {},
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                  icon: SvgPicture.asset("assets/images/decks_icon.svg", width: 35, height: 35),
+                  padding: EdgeInsets.zero,
+                  onPressed: () {},
+                ),
+                const Text('Decks', style: TextStyle(fontSize: 12)),
+              ],
+            ),
+            const SizedBox(width: 50),
+            Column(
+              spacing: 0,
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                  icon: const Icon(
+                    Icons.cast_outlined,
+                    size: 40,
+                    color: Color.fromARGB(255, 249, 60, 60),
                   ),
-                  const Text('Decks', style: TextStyle(fontSize: 12)),
-                ],
-              ),
-              SizedBox(width: 50),
-              Column(
-                spacing: 0,
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  IconButton(
-                    icon: Icon(
-                      size: 40,
-                      Icons.cast_outlined,
-                      color: Color.fromARGB(255, 249, 60, 60),
-                    ),
-                    padding: EdgeInsets.all(0.0),
-                    onPressed: () {},
-                  ),
-                  const Text('Cast', style: TextStyle(fontSize: 12)),
-                ],
-              ),
-            ],
-          ),
+                  padding: EdgeInsets.zero,
+                  onPressed: () {},
+                ),
+                const Text('Cast', style: TextStyle(fontSize: 12)),
+              ],
+            ),
+          ],
         ),
       ),
     );

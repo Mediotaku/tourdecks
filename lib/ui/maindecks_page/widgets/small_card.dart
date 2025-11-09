@@ -37,7 +37,8 @@ class SmallCard extends ConsumerWidget {
         createRectTween: (begin, end) {
           return MaterialRectCenterArcTween(begin: begin, end: end);
         },
-        flightShuttleBuilder: (
+        //Optional flightShuttleWidget with full card footer transition animation
+        /*flightShuttleBuilder: (
           flightContext,
           animation,
           flightDirection,
@@ -49,7 +50,7 @@ class SmallCard extends ConsumerWidget {
             documentsPath: documentsPath,
             animation: animation,
           );
-        },
+        },*/
 
         //Material widget required to fix a know issue with text losing style during Hero animation, see: https://github.com/flutter/flutter/issues/12463
         child: Material(

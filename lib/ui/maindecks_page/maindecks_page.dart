@@ -80,7 +80,7 @@ class MainDecksPage extends ConsumerWidget {
           // FAB action
         },
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-        backgroundColor: const Color.fromARGB(255, 255, 128, 128),
+        backgroundColor: const Color(0xFFFF6E6E),
         child: const Icon(Icons.near_me_outlined, size: 55, color: Colors.white),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

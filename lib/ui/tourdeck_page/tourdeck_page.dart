@@ -103,6 +103,72 @@ class TourDeckPage extends ConsumerWidget {
         shape: AutomaticNotchedShape(
           RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         ),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(0, 16, 0, 0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              // Large "Read Card" button on the left
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFFFF6E6E),
+                        elevation: 0,
+                        shadowColor: Colors.transparent,
+                        padding: const EdgeInsets.symmetric(vertical: 11, horizontal: 30),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+                      ),
+                      child: const Text(
+                        'Read Card',
+                        style: TextStyle(fontFamily: 'Petrona', color: Colors.white, fontSize: 19),
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    SizedBox(width: 36),
+                    // Lists icon button
+                    IconButton(
+                      onPressed: () {},
+                      style: IconButton.styleFrom(
+                        backgroundColor: const Color(0xFFFF6E6E),
+                        elevation: 0,
+                        shadowColor: Colors.transparent,
+                        shape: const CircleBorder(),
+                        iconSize: 28,
+                        padding: EdgeInsetsGeometry.all(10),
+                      ),
+                      icon: const Icon(Icons.list, color: Colors.white),
+                    ),
+                    // Pencil icon button
+                    SizedBox(width: 18),
+                    IconButton(
+                      onPressed: () {},
+                      style: IconButton.styleFrom(
+                        backgroundColor: const Color(0xFFFF6E6E),
+                        elevation: 0,
+                        shadowColor: Colors.transparent,
+                        shape: const CircleBorder(),
+                        iconSize: 28,
+                        padding: EdgeInsetsGeometry.all(10),
+                      ),
+                      icon: const Icon(Icons.edit_outlined, color: Colors.white),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

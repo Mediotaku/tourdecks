@@ -33,9 +33,16 @@ class TourDeckRepository {
         _hive.values.toList().indexWhere((element) => element. == id));
     return _hive.values.toList();
   }*/
-  /// Update TourDeck
-  /*List<TourDeck> updateTodo(int index, TourDeck todo) {
+
+  /// Update TourDeck by Index
+  List<TourDeck> updateItemByIndex(int index, TourDeck todo) {
     _hive.putAt(index, todo);
     return _hive.values.toList();
-  }*/
+  }
+
+  /// Update TourDeck by Key
+  List<TourDeck> updateItemByKey(int key, TourDeck todo) {
+    _hive.put(key, todo);
+    return _hive.values.toList();
+  }
 }

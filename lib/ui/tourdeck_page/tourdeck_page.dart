@@ -8,19 +8,53 @@ import 'package:tourdecks/ui/maindecks_page/maindecks_viewmodel.dart';
 import 'package:tourdecks/ui/tourdeck_page/tourdeck_viewmodel.dart';
 import 'package:tourdecks/ui/tourdeck_page/widgets/animated_card.dart';
 
-class TourDeckPage extends ConsumerWidget {
+class TourDeckPage extends ConsumerStatefulWidget {
   final int deckKey;
   const TourDeckPage({super.key, required this.deckKey});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<TourDeckPage> createState() => _TourDeckPageState();
+}
+
+class _TourDeckPageState extends ConsumerState<TourDeckPage> {
+  late final PageController pageController;
+
+  @override
+  void initState() {
+    super.initState();
+    // Ensure edit mode is off whenever this page loads
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(isEditModeProvider.notifier).state = false;
+      ref.read(focusedCardIndexProvider.notifier).state = 0;
+    });
+
+    pageController = PageController(viewportFraction: 0.73);
+    pageController.addListener(() {
+      if (pageController.position.haveDimensions) {
+        final p = pageController.page;
+        if (p != null) {
+          ref.read(focusedCardIndexProvider.notifier).state = p.round();
+        }
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     List<Card> items = ref.watch(cardsProvider);
-    final pageController = PageController(viewportFraction: 0.73);
+    List<int> itemIds = ref.read(cardIdsProvider);
     String documentsPath = ref.watch(filesPathProvider).value ?? '';
-    final tourdeck = ref.read(tourDecksProvider.notifier).getTourDeckByKey(deckKey);
+    final tourdeck = ref.read(tourDecksProvider.notifier).getTourDeckByKey(widget.deckKey);
+    final editMode = ref.watch(isEditModeProvider);
 
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 235, 235, 235),
+      backgroundColor: const Color.fromARGB(255, 235, 235, 235),
       body: CustomPaint(
         painter: DotBackground(),
         child: SafeArea(
@@ -81,14 +115,16 @@ class TourDeckPage extends ConsumerWidget {
               Expanded(
                 child: PageView.builder(
                   controller: pageController,
-                  itemCount: items.length,
+                  itemCount: itemIds.length,
                   itemBuilder: (context, index) {
-                    final item = items[index];
+                    final item = ref.read(cardsProvider.notifier).getCardById(itemIds[index]);
                     return AnimatedCard(
+                      key: ValueKey(item!.key),
                       pageController: pageController,
                       index: index,
                       item: item,
                       documentsPath: documentsPath,
+                      editMode: editMode,
                     );
                   },
                 ),
@@ -139,6 +175,7 @@ class TourDeckPage extends ConsumerWidget {
                     // Lists icon button
                     IconButton(
                       onPressed: () {},
+
                       style: IconButton.styleFrom(
                         backgroundColor: const Color(0xFFFF6E6E),
                         elevation: 0,
@@ -152,7 +189,9 @@ class TourDeckPage extends ConsumerWidget {
                     // Pencil icon button
                     SizedBox(width: 18),
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        ref.read(isEditModeProvider.notifier).state = !editMode;
+                      },
                       style: IconButton.styleFrom(
                         backgroundColor: const Color(0xFFFF6E6E),
                         elevation: 0,
@@ -161,7 +200,7 @@ class TourDeckPage extends ConsumerWidget {
                         iconSize: 28,
                         padding: EdgeInsetsGeometry.all(10),
                       ),
-                      icon: const Icon(Icons.edit_outlined, color: Colors.white),
+                      icon: Icon(editMode ? Icons.check : Icons.edit_outlined, color: Colors.white),
                     ),
                   ],
                 ),

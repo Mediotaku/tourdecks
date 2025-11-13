@@ -17,13 +17,26 @@ class TourDeck extends HiveObject {
     this.isPlaceholder = false,
   }) : this.creationDate = creationDate ?? DateTime.now().toUtc();
 
-  factory TourDeck.createPlaceholder() => TourDeck(
-    name: "name",
-    location: "location",
-    cardIds: [],
-    isMine: true,
-    isPlaceholder: true,
-  );
+  factory TourDeck.createPlaceholder() =>
+      TourDeck(name: "name", location: "location", cardIds: [], isMine: true, isPlaceholder: true);
+
+  TourDeck copyWith({
+    String? name,
+    String? location,
+    DateTime? creationDate,
+    List<int>? cardIds,
+    bool? isMine,
+    bool? isPlaceholder,
+  }) {
+    return TourDeck(
+      name: name ?? this.name,
+      location: location ?? this.location,
+      cardIds: cardIds ?? this.cardIds,
+      isMine: isMine ?? this.isMine,
+      creationDate: creationDate ?? this.creationDate,
+      isPlaceholder: isPlaceholder ?? this.isPlaceholder,
+    );
+  }
 
   factory TourDeck.fromJson(Map<String, dynamic> json) => TourDeck(
     name: json['name'],

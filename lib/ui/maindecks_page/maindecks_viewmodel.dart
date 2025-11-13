@@ -66,15 +66,34 @@ class TourdecksNotifier extends StateNotifier<List<TourDeck>> {
     return repo!.getItemByKey(key);
   }
 
-  ///remove todo from local Storage
-  /*void removeTodo(String id) {
-    state = repo!.removeTodo(id);
+  void moveCardInsideTourdeck(int deckKey, int oldIndex, int newIndex) {
+    final tourdeck = getTourDeckByKey(deckKey);
+    if (tourdeck == null) return;
+
+    final cardIds = List<int>.from(tourdeck.cardIds);
+    final cardId = cardIds.removeAt(oldIndex);
+    cardIds.insert(newIndex, cardId);
+
+    TourDeck updatedTourdeck = tourdeck.copyWith(cardIds: cardIds);
+
+    //Update the local repo
+    updateTourdeck(deckKey, updatedTourdeck);
+
+    //Update also in the selected tourdeck provider
+    ref.read(selectedTourDeckProvider.notifier).select(updatedTourdeck);
+
+    //Refresh cardsProvider to reflect the changes
+    ref.read(cardsProvider.notifier).fetchCards();
   }
 
   ///Update  current todo from local Storage
+  void updateTourdeck(int key, TourDeck item) {
+    state = repo!.updateItemByKey(key, item);
+  }
 
-  void updateTodo(int index, Todo todo) {
-    state = repo!.updateTodo(index, todo);
+  ///remove todo from local Storage
+  /*void removeTodo(String id) {
+    state = repo!.removeTodo(id);
   }*/
 }
 

@@ -47,8 +47,7 @@ class _TourDeckPageState extends ConsumerState<TourDeckPage> {
 
   @override
   Widget build(BuildContext context) {
-    List<Card> items = ref.watch(cardsProvider);
-    List<int> itemIds = ref.read(cardIdsProvider);
+    List<int> itemIds = ref.watch(cardIdsProvider);
     String documentsPath = ref.watch(filesPathProvider).value ?? '';
     final tourdeck = ref.read(tourDecksProvider.notifier).getTourDeckByKey(widget.deckKey);
     final editMode = ref.watch(isEditModeProvider);
@@ -113,20 +112,32 @@ class _TourDeckPageState extends ConsumerState<TourDeckPage> {
               ),
               // Card carousel
               Expanded(
-                child: PageView.builder(
-                  controller: pageController,
-                  itemCount: itemIds.length,
-                  itemBuilder: (context, index) {
-                    final item = ref.read(cardsProvider.notifier).getCardById(itemIds[index]);
-                    return AnimatedCard(
-                      key: ValueKey(item!.key),
-                      pageController: pageController,
-                      index: index,
-                      item: item,
-                      documentsPath: documentsPath,
-                      editMode: editMode,
-                    );
-                  },
+                child: Stack(
+                  children: [
+                    PageView.builder(
+                      controller: pageController,
+                      itemCount: itemIds.length,
+                      itemBuilder: (context, index) {
+                        final item = ref.read(cardsProvider.notifier).getCardById(itemIds[index]);
+                        return AnimatedCard(
+                          key: ValueKey(item!.key),
+                          pageController: pageController,
+                          index: index,
+                          item: item,
+                          documentsPath: documentsPath,
+                          editMode: editMode,
+                        );
+                      },
+                    ),
+                    //Best solution to block PageView drag without blocking inner gestures (changing physics triggers rebuild)
+                    if (editMode)
+                      Positioned.fill(
+                        child: IgnorePointer(
+                          ignoring: false,
+                          child: GestureDetector(onHorizontalDragUpdate: (_) {}),
+                        ),
+                      ),
+                  ],
                 ),
               ),
             ],

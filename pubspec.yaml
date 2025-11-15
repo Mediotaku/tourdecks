@@ -68,3 +68,9 @@ flutter:
     - family: Petrona
       fonts:
         - asset: assets/fonts/Petrona-Bold.ttf
+    - family: PetronaVariable
+      fonts:
+        - asset: assets/fonts/Petrona-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Petrona-SemiBold.ttf
+          weight: 600

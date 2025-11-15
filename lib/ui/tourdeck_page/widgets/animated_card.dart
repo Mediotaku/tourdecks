@@ -1,9 +1,11 @@
 import 'dart:io';
 import 'package:flutter/material.dart' hide Card;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tourdecks/data/enums/dialog_options.dart';
 import 'package:tourdecks/models/card.dart';
 import 'package:tourdecks/ui/maindecks_page/maindecks_viewmodel.dart';
 import 'package:tourdecks/ui/tourdeck_page/tourdeck_viewmodel.dart';
+import 'package:tourdecks/utils/dialog_utils.dart';
 
 // Convert to Stateful to host AnimationController
 class AnimatedCard extends ConsumerStatefulWidget {
@@ -256,6 +258,58 @@ class _AnimatedCardState extends ConsumerState<AnimatedCard> with SingleTickerPr
                             );
                           },
                         ),
+                      ),
+                    ),
+                  ),
+                ),
+                // Trash (delete) button
+                Positioned(
+                  right: -9,
+                  top: -22,
+                  child: AnimatedScale(
+                    scale: showEditButtons ? 1.0 : 0.0,
+                    duration: const Duration(milliseconds: 220),
+                    curve: Curves.easeOutBack,
+                    child: IgnorePointer(
+                      ignoring: !showEditButtons,
+                      child: IconButton(
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(minWidth: 38, minHeight: 38),
+                        iconSize: 25,
+                        style: IconButton.styleFrom(
+                          backgroundColor: const Color(0xFFFF6E6E),
+                          shape: const CircleBorder(),
+                          padding: const EdgeInsets.all(0),
+                        ),
+                        icon: const Icon(Icons.delete_outline, color: Colors.white),
+                        onPressed: () async {
+                          final options = {
+                            DeleteOptions.cancel: 'Cancel',
+                            DeleteOptions.delete: 'Delete',
+                          };
+
+                          await DialogUtils()
+                              .showWarningDialogWithOptions(
+                                'Are you sure you want to delete this card?',
+                                'This action is not reversible',
+                                options,
+                              )
+                              .then((result) {
+                                /*if (result == DeleteOptions.delete) {
+                              ref
+                                  .read(tourDecksProvider.notifier)
+                                  .removeCardFromTourdeck(
+                                    ref.read(selectedTourDeckProvider)!.key,
+                                    widget.item.key,
+                                  );
+                              // Optionally update focused index if last card removed
+                              final newTotal = ref.read(cardIdsProvider).length;
+                              if (focusedIndex >= newTotal && newTotal > 0) {
+                                ref.read(focusedCardIndexProvider.notifier).state = newTotal - 1;
+                              }
+                            }*/
+                              });
+                        },
                       ),
                     ),
                   ),

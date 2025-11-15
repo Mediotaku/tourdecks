@@ -129,23 +129,3 @@ class MainDecksPage extends ConsumerWidget {
     );
   }
 }
-
-/* ValueListenableBuilder<Box<TourDeck>>(
-              valueListenable: TourDeckRepository.getDecksBox().listenable(),
-              builder: (context, box, _) {
-                final todos = box.values.toList().cast<TourDeck>();
-                return buildContent(todos, todoModel);
-              },
-            ),}*/
-/*ElevatedButton(
-                  onPressed: () {
-                    final test = TourDeck(
-                      name: "Imperial Garden",
-                      location: "Tokyo,Japan",
-                      cardIds: [],
-                      isMine: true,
-                    );
-                    ref.read(tourDecksProvider.notifier).addTourDeck(test);
-                  },
-                  child: const Text('Add Tourdeck'),
-                ),*/

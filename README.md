@@ -2,7 +2,7 @@
 
 A new application for people who love touring :airplane: :japanese_castle: :sunrise_over_mountains:
 
-A personal project in Flutter to practice and have fun with animations. 
+A personal project in Flutter to practice animations and have fun with new features. 
 
 ***Work in progress***
 

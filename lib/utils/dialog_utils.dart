@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:tourdecks/data/enums/dialog_options.dart';
 import 'package:tourdecks/global/labels.dart';
 import 'package:tourdecks/main.dart';
 
@@ -94,7 +95,7 @@ class DialogUtils {
               children: [
                 Container(
                   margin: const EdgeInsets.only(top: 50),
-                  padding: const EdgeInsets.fromLTRB(10, 60, 10, 20),
+                  padding: const EdgeInsets.fromLTRB(0, 60, 0, 20),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(20),
@@ -103,13 +104,13 @@ class DialogUtils {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       SizedBox(
-                        width: 220,
+                        width: 240,
                         child: Text(
                           title,
                           textAlign: TextAlign.center,
                           style: const TextStyle(
                             fontFamily: 'PetronaVariable',
-                            fontSize: 21,
+                            fontSize: 23,
                             color: Color(0xFFEC4C4C),
                             height: 1.2,
                             fontWeight: FontWeight.w600,
@@ -122,7 +123,7 @@ class DialogUtils {
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           fontFamily: 'PetronaVariable',
-                          fontSize: 12,
+                          fontSize: 14,
                           fontWeight: FontWeight.w500,
                           color: Colors.red,
                         ),
@@ -137,16 +138,31 @@ class DialogUtils {
                                   Navigator.pop(context, entry.key);
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.blue,
-                                  foregroundColor: Colors.white,
-                                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                                  backgroundColor:
+                                      entry.key == DeleteOptions.cancel
+                                          ? Colors.white
+                                          : const Color(0xFFFF6E6E),
+                                  elevation: 0,
+                                  shadowColor: Colors.transparent,
+                                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 35),
                                   shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
+                                    borderRadius: BorderRadius.circular(50),
+                                    side:
+                                        entry.key == DeleteOptions.cancel
+                                            ? const BorderSide(color: Color(0xFFFF6E6E), width: 2)
+                                            : const BorderSide(width: 0),
                                   ),
                                 ),
                                 child: Text(
                                   entry.value,
-                                  style: const TextStyle(fontFamily: 'Petrona', fontSize: 14),
+                                  style: TextStyle(
+                                    fontFamily: 'Petrona',
+                                    fontSize: 16,
+                                    color:
+                                        entry.key == DeleteOptions.cancel
+                                            ? const Color(0xFFFF6E6E)
+                                            : Colors.white,
+                                  ),
                                 ),
                               );
                             }).toList(),
